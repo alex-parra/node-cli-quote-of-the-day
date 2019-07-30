@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const axios = require('axios');
+const chalk = require('chalk');
+const _ = require('lodash');
+
+const API = 'https://quotes.rest/qod';
+
+(async function() {
+  try {
+    const res = await axios({ method: 'get', url: API, headers: { Accept: 'application/json' } });
+    const quote = _.get(res, 'data.contents.quotes[0]');
+
+    console.log(chalk.green(`${quote.title}`));
+    console.log(`${quote.quote}`);
+    console.log(`– ${quote.author}`);
+    console.log(``);
+    console.log(`TAGs: ${quote.tags.join(', ')}`);
+
+  } catch(error) {
+    console.error(chalk.red('Oops! An error occurred:'), error.message);
+  }
+})();
